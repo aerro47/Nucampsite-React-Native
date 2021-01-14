@@ -107,7 +107,7 @@ class CampsiteInfo extends Component {
     }
 
     handleComment(campsiteId) {
-        postComment(campsiteId, this.state.rating, this.state.author, this.state.text);
+        this.props.postComment(campsiteId, this.state.rating, this.state.author, this.state.text);
         this.toggleModal();
     }
 
@@ -141,7 +141,7 @@ class CampsiteInfo extends Component {
                 />
                 <RenderComments comments={comments} />
                 <Modal
-                    animation={'slide'}
+                    animationType={'slide'}
                     transparent={false}
                     visible={this.state.showModal}
                     onRequestClose={() => this.toggleModal()}
