@@ -17,6 +17,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 import { fetchCampsites, fetchPromotions, fetchComments, fetchPartners } from '../redux/ActionCreators';
 import NetInfo from '@react-native-community/netinfo';
+import { TouchableHighlightBase } from 'react-native';
 
 
 const mapDispatchToProps = {
@@ -334,13 +335,19 @@ class Main extends Component {
         this.props.fetchPromotions();
         this.props.fetchPartners();
 
-        NetInfo.fetch().then(connectionInfo => {
-            (Platform.OS === 'ios')
-                ? Alert.alert('Intial Network Connectivity Type:', connectionInfo.type)
-                : ToastAndroid.show('Initial Network Connectivity Type: ' +
-                    connectionInfo.type, ToastAndroid.LONG);
-        });
+        this.showNetinfo();
+    }
 
+    async showNetinfo() {
+        const netInfo = await NetInfo.fetch();
+        if (netInfo.ok) {
+            connectionInfo => {
+                (Platform.OS === 'ios')
+                    ? Alert.alert('Intial Network Connectivity Type:', connectionInfo.type)
+                    : ToastAndroid.show('Initial Network Connectivity Type: ' +
+                        connectionInfo.type, ToastAndroid.LONG)
+            }};
+    
         this.unsubscribeNetInfo = NetInfo.addEventListener(connectionInfo => {
             this.handleConnectivityChange(connectionInfo);
         })
